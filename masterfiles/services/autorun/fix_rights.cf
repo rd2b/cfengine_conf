@@ -1,0 +1,22 @@
+bundle agent fix_rights_autorun
+{
+meta:
+    "tags" slist => { "autorun" };
+
+reports:
+    verbose_mode::
+        "$(this.bundle): Hello, this is an automatically loaded bundle";
+
+files:
+    any::
+
+        "/etc/bash.bashrc"          perms => promisemode("644");
+        "/etc/sudoers"              perms => promisemode("440");
+
+# Droits du ssh:
+        "/etc/ssh/ssh_host_dsa_key" perms => promisemode("600");                
+        "/etc/ssh/ssh_host_rsa_key" perms => promisemode("600"); 
+
+
+
+}
