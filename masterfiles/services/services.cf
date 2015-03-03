@@ -1,8 +1,0 @@
-bundle agent change_management                                                  
-{
-
-    vars:
-        linux::
-            "Services" slist => { "none"
-            };
-}
