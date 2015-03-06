@@ -1,0 +1,31 @@
+bundle agent deploy_files
+{
+meta:
+    "tags" slist => { "autorun" };
+
+vars:
+    linux::
+        "group_path" string => "/data/cfexternals/kimarchi/";
+        "dirstocopy"   slist  => { "/etc", "/usr/local/bin" };
+
+classes:
+   linux::
+       "exists_default[$(dirstocopy)]" expression => fileexists("$(group_path)/groups/default/$(dirstocopy)");
+       "exists_host[$(dirstocopy)]" expression => fileexists("$(group_path)/hosts/${sys.fqhost}/$(dirstocopy)");
+
+files:
+    linux::
+        "$(dirstocopy)"
+        comment => "Copying $(dirstocopy)",
+                handle => "file_default",
+                copy_from => local_cp("$(group_path)/groups/default/$(dirstocopy)"),
+                depth_search => recurse("inf"),
+                ifvarclass => fileexists("$(group_path)/groups/default/$(dirstocopy)");
+
+    "$(dirstocopy)"
+        comment => "Copying $(dirstocopy)",
+                copy_from => local_cp("$(group_path)/hosts/${sys.fqhost}/$(dirstocopy)"),
+                depth_search => recurse("inf"),
+                ifvarclass => fileexists("$(group_path)/hosts/${sys.fqhost}/$(dirstocopy)");
+
+}
