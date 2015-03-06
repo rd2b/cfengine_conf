@@ -1,0 +1,44 @@
+bundle agent clone_git_repos {
+meta:
+        "tags" slist => { "autorun" };
+
+vars:
+    (debian|ubuntu)::
+        # Deployer dans ce repertoire
+        "dir_externals" string => "/data/cfexternals";
+
+        # Ces depots:
+        "repos[monitor]"   string => "https://github.com/rd2b/monitor.git";
+        "repos[cfrepos]"   string => "https://github.com/rd2b/kimarchi.git";
+
+        "repos_names" slist => getindices("repos");
+files:
+    (debian|ubuntu)::
+        "$(dir_externals)/."
+            create => "true",
+            perms => m("700");
+
+        "$(dir_externals)/$(repos_names)/."
+            create => "true",
+            perms => m("700");
+
+commands:
+    (debian|ubuntu)::
+        "/usr/bin/git clone $(repos[$(repos_names)]) ."
+            contain => in_dir_and_setuid_sh("$(dir_externals)/$(repos_names)", "root"),
+            action => if_elapsed("60"),
+            ifvarclass => not(fileexists("$(dir_externals)/$(repos_names)/.git/."));
+
+        "/usr/bin/git pull"
+            contain => in_dir_and_setuid_sh("$(dir_externals)/$(repos_names)", "root"),
+            action => if_elapsed("60"),
+            ifvarclass => fileexists("$(dir_externals)/$(repos_names)/.git/.");
+}
+
+
+body contain in_dir_and_setuid_sh(dir,owner)
+{
+    chdir => "$(dir)";
+    exec_owner => "$(owner)";
+    useshell => "true";
+}
