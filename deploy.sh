@@ -9,9 +9,14 @@ quiet=false
 
 set -u
 
-cfinputs="/data/mycf/masterfiles/"
-
+cfinputs="./masterfiles/"
 
 agent="/var/cfengine/masterfiles/"
 
-rsync -av $cfinputs $agent
+if test -d "$cfinputs"; then 
+    rsync -av $cfinputs $agent
+else
+    echo "$cfinputs n'existe pas"
+    exit 1
+fi
+
