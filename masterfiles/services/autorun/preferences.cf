@@ -1,0 +1,14 @@
+bundle agent set_preferences
+{
+meta:
+    "tags" slist => { "autorun" };
+
+
+files:
+    (debian|ubuntu)::
+        "/etc/alternatives/editor"
+            link_from => ln_s("/usr/bin/vim");
+
+
+}
+
