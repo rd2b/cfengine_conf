@@ -4,10 +4,11 @@ meta:
     "tags" slist => { "autorun" };
 
 
-files:
+commands:
     (debian|ubuntu)::
-        "/etc/alternatives/editor"
-            link_from => ln_s("/usr/bin/vim");
+        "/usr/bin/update-alternatives --set editor /usr/bin/vim.basic"
+            action => if_elapsed("60");
+
 
 
 }
