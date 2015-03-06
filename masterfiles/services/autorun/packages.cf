@@ -1,0 +1,35 @@
+bundle agent needed_packages
+{
+meta:
+    "tags" slist => { "noautorun" };
+
+
+vars:
+    debian::
+        "packages[manpages]"    string => "/usr/share/doc/manpages/changelog.Debian.gz";
+        "packages[vim]"         string => "/usr/bin/vim.basic";
+        "packages[lsof]"        string => "/usr/bin/lsof";
+        "packages[bash-completion]"     string => "/usr/share/doc/bash-completion/changelog.Debian.gz";
+        "packages[openssh-blacklist]"   string => "/usr/share/doc/openssh-blacklist/copyright";
+
+    ubuntu::
+        "packages[update-manager-core]" string => "/usr/bin/do-release-upgrade";
+
+    (debian|ubuntu)::
+        "packages[screen]"  string => "/usr/bin/screen";
+        "packages[rsync]"   string => "/usr/bin/rsync";
+        "packages[man]"     string => "/usr/bin/man";
+        "packages[tree]"    string => "/usr/bin/tree";
+        "packages[git]"     string => "/usr/bin/git";
+        "packages[curl]"    string => "/usr/bin/curl";
+        "packages[dnsutils]" string => "/usr/bin/dig";
+
+        "packagesnames" slist => getindices("packages");
+
+packages:
+    "$(packagesnames)";
+
+
+
+}
+
