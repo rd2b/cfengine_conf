@@ -10,12 +10,12 @@ reports:
 files:
     any::
 
-        "/etc/bash.bashrc"          perms => promisemode("644");
-        "/etc/sudoers"              perms => promisemode("440");
+        "/etc/bash.bashrc"          perms => m("644");
+        "/etc/sudoers"              perms => m("440");
 
 # Droits du ssh:
-        "/etc/ssh/ssh_host_dsa_key" perms => promisemode("600");                
-        "/etc/ssh/ssh_host_rsa_key" perms => promisemode("600"); 
+        "/etc/ssh/ssh_host_dsa_key" perms => m("600");                
+        "/etc/ssh/ssh_host_rsa_key" perms => m("600"); 
 
 
 
